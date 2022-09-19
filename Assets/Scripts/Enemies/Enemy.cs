@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     public float speed = 2f;
     private bool isPatrolling = true;
+    public bool gotHit = false;
     private Vector3 originalPosition;
     public Transform startPatrolPoint;
     public Transform endPatrolPoint;
@@ -65,7 +66,14 @@ public class Enemy : MonoBehaviour
         {
             isPatrolling = false;
             player = other.gameObject;
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            if (!gotHit)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            } else
+            {
+                transform.position = transform.position;
+                StartCoroutine(EnemyAttacked());
+            }
         }
     }
 
@@ -75,5 +83,12 @@ public class Enemy : MonoBehaviour
         {
             player = null;
         }
+    }
+
+
+    IEnumerator EnemyAttacked()
+    {
+        yield return new WaitForSeconds(2);
+        gotHit = false;
     }
 }

@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 6458592021805714769}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  gotHit: 0
   startPatrolPoint: {fileID: 6458592022519573539}
   endPatrolPoint: {fileID: 6458592022473303599}
 --- !u!135 &6458592021805714607

@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float gravity = 8f;
     public float jumpSpeed = 4f;
     private Vector3 moveDirection = Vector3.zero;
+    private float verticalVelocity = 0;
     private bool canDoubleJump;
 
     private CharacterController characterController;
@@ -22,28 +23,32 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float xMove = Input.GetAxisRaw("Horizontal");
+        float zMove = Input.GetAxisRaw("Vertical");
         if (characterController.isGrounded)
         {
-            float xMove = Input.GetAxisRaw("Horizontal");
-            float zMove = Input.GetAxisRaw("Vertical");
-            moveDirection = new Vector3(xMove, 0f, zMove);
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= speed;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 canDoubleJump = true;
-                moveDirection.y = jumpSpeed;
+                verticalVelocity = jumpSpeed;
+                moveDirection.y = verticalVelocity;
+            } else
+            {
+                verticalVelocity = 0;
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump)
             {
-                moveDirection.y += 3;
+                verticalVelocity += 3;
                 canDoubleJump = false;
             }
         }
-        moveDirection.y -= gravity * Time.deltaTime;
+        verticalVelocity -= gravity * Time.deltaTime;
+        moveDirection = new Vector3(xMove, verticalVelocity, zMove);
+        moveDirection = transform.TransformDirection(moveDirection);
+        moveDirection *= speed;
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
