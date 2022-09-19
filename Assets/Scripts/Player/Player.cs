@@ -41,14 +41,15 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump)
             {
-                verticalVelocity += 3;
+                verticalVelocity += 4f;
                 canDoubleJump = false;
             }
         }
         verticalVelocity -= gravity * Time.deltaTime;
         moveDirection = new Vector3(xMove, verticalVelocity, zMove);
         moveDirection = transform.TransformDirection(moveDirection);
-        moveDirection *= speed;
+        moveDirection.x *= speed;
+        moveDirection.z *= speed;
         characterController.Move(moveDirection * Time.deltaTime);
     }
 

@@ -21,7 +21,7 @@ public class Weapon : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("enemy"))
         {
-            collision.gameObject.GetComponent<Enemy>().gotHit = true;
+            collision.gameObject.GetComponent<Enemy>().gotHit();
         }
     }
 }

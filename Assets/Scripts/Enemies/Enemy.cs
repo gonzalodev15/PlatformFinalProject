@@ -7,11 +7,13 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     public float speed = 2f;
     private bool isPatrolling = true;
-    public bool gotHit = false;
+    public bool enemyHit = false;
     private Vector3 originalPosition;
     public Transform startPatrolPoint;
     public Transform endPatrolPoint;
     private Transform currentPatrolPoint;
+    [SerializeField] private Animator enemyAnimator = null;
+    [SerializeField] float enemyLife = 3;
    
     // Start is called before the first frame update
     void Start()
@@ -41,11 +43,9 @@ public class Enemy : MonoBehaviour
                 {
                     if(currentPatrolPoint == startPatrolPoint)
                     {
-                        print("Hacia la derecha");
                         currentPatrolPoint = endPatrolPoint;
                     } else if (currentPatrolPoint == endPatrolPoint)
                     {
-                        print("Hacia la izquierda");
                         currentPatrolPoint = startPatrolPoint;
                     }
                 }
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
         {
             isPatrolling = false;
             player = other.gameObject;
-            if (!gotHit)
+            if (!enemyHit)
             {
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
             } else
@@ -85,10 +85,27 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void gotHit()
+    {
+        enemyLife -= 1;
+        enemyHit = true;
+        if(enemyLife <= 0)
+        {
+            enemyAnimator.Play("EnemyDefeated");
+            StartCoroutine(destroyEnemy());
+        }
+    }
+
+    IEnumerator destroyEnemy()
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(transform.parent.gameObject);
+    }
+
 
     IEnumerator EnemyAttacked()
     {
         yield return new WaitForSeconds(2);
-        gotHit = false;
+        enemyHit = false;
     }
 }

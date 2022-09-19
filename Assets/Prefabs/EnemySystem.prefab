@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 6458592021805714768}
   - component: {fileID: 6458592021805714607}
   - component: {fileID: 6458592021805714769}
+  - component: {fileID: 3951654060074351143}
   m_Layer: 0
   m_Name: Cube
   m_TagString: enemy
@@ -142,9 +143,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  gotHit: 0
+  enemyHit: 0
   startPatrolPoint: {fileID: 6458592022519573539}
   endPatrolPoint: {fileID: 6458592022473303599}
+  enemyAnimator: {fileID: 3951654060074351143}
+  enemyLife: 2
 --- !u!135 &6458592021805714607
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -174,6 +177,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &3951654060074351143
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458592021805714602}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ddc6c99345328469aa4312d249492290, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6458592022473303598
 GameObject:
   m_ObjectHideFlags: 0
