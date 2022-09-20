@@ -23,8 +23,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float xMove = Input.GetAxisRaw("Horizontal");
-        float zMove = Input.GetAxisRaw("Vertical");
+        float xMove = Input.GetAxis("Horizontal");
+        float zMove = Input.GetAxis("Vertical");
         if (characterController.isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
             } else
             {
                 verticalVelocity = 0;
+                moveDirection.y = verticalVelocity;
             }
         }
         else
