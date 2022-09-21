@@ -9,7 +9,9 @@ public class Player : MonoBehaviour
     public float gravity = 8f;
     public float jumpSpeed = 4f;
     private Vector3 moveDirection = Vector3.zero;
+    private Vector3 impact = Vector3.zero;
     private float verticalVelocity = 0;
+    private float mass = 1.0f; // defines the character mass
     private bool canDoubleJump;
 
     private CharacterController characterController;
@@ -52,14 +54,24 @@ public class Player : MonoBehaviour
         moveDirection.x *= speed;
         moveDirection.z *= speed;
         characterController.Move(moveDirection * Time.deltaTime);
+
+        if (impact.magnitude > 0.2) characterController.Move(impact * Time.deltaTime);
+        // consumes the impact energy each cycle:
+        impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
     }
 
-    private void FixedUpdate()
+    void AddImpact(Vector3 direction, float force)
     {
-        
+        direction.Normalize();
+        if (direction.y < 0) direction.y = -direction.y; // reflect down force on the ground
+        impact += direction.normalized * force / mass;
     }
 
-    void OnCollisionStay()
+    private void OnCollisionEnter(Collision collision)
     {
+        if(collision.gameObject.CompareTag("enemy"))
+        {
+            AddImpact(transform.position - collision.gameObject.transform.position, 15.0f);
+        }
     }
 }
