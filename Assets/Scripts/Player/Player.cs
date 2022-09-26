@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public bool hasInvincibility = false;
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
+    public static Action OnPlayerDied;
 
     private CharacterController characterController;
 
@@ -76,7 +77,6 @@ public class Player : MonoBehaviour
     {
         playerCurrentHealth += healthToRestore;
         OnItemObtained?.Invoke();
-        print("La vida del personaje es " + playerCurrentHealth);
     }
 
     public void substractHealth(float healthToSubstract)
@@ -84,7 +84,11 @@ public class Player : MonoBehaviour
         if (hasInvincibility) { return; }
         playerCurrentHealth -= healthToSubstract;
         OnPlayerDamaged?.Invoke();
-        print("La vida del personaje es " + playerCurrentHealth);
+        if (playerCurrentHealth <= 0)
+        {
+            OnPlayerDied?.Invoke();
+            return;
+        }
         StartCoroutine(AttackInmunity());
     }
 

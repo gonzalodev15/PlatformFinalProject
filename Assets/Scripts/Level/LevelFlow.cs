@@ -13,6 +13,7 @@ public class LevelFlow : MonoBehaviour
 
     private void OnEnable()
     {
+        Player.OnPlayerDied += LoadLoseLevel;
         Goal.GoalReached += LoadWinLevel;
         FallDetection.PlayerDied += LoadLoseLevel;
     }
@@ -35,6 +36,7 @@ public class LevelFlow : MonoBehaviour
 
     private void OnDisable()
     {
+        Player.OnPlayerDied -= LoadLoseLevel;
         Goal.GoalReached -= LoadWinLevel;
         FallDetection.PlayerDied -= LoadLoseLevel;
     }
