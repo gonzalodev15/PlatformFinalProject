@@ -8,11 +8,16 @@ public class Player : MonoBehaviour
     public float speed = 2f;
     public float gravity = 8f;
     public float jumpSpeed = 4f;
+    public float playerMaxHealth = 8.0f;
+    public float playerCurrentHealth = 8.0f;
     private Vector3 moveDirection = Vector3.zero;
     private Vector3 impact = Vector3.zero;
     private float verticalVelocity = 0;
     private float mass = 1.0f; // defines the character mass
     private bool canDoubleJump;
+    public bool hasInvincibility = false;
+    public static Action OnPlayerDamaged;
+    public static Action OnItemObtained;
 
     private CharacterController characterController;
 
@@ -67,11 +72,34 @@ public class Player : MonoBehaviour
         impact += direction.normalized * force / mass;
     }
 
+    public void restoreHealth(float healthToRestore)
+    {
+        playerCurrentHealth += healthToRestore;
+        OnItemObtained?.Invoke();
+        print("La vida del personaje es " + playerCurrentHealth);
+    }
+
+    public void substractHealth(float healthToSubstract)
+    {
+        if (hasInvincibility) { return; }
+        playerCurrentHealth -= healthToSubstract;
+        OnPlayerDamaged?.Invoke();
+        print("La vida del personaje es " + playerCurrentHealth);
+        StartCoroutine(AttackInmunity());
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("enemy"))
         {
-            AddImpact(transform.position - collision.gameObject.transform.position, 15.0f);
+            AddImpact(transform.position - collision.gameObject.transform.position, 8.0f);
         }
+    }
+
+    IEnumerator AttackInmunity()
+    {
+        hasInvincibility = true;
+        yield return new WaitForSeconds(1.5f);
+        hasInvincibility = false;
     }
 }

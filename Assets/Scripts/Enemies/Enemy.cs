@@ -2,10 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyType
+{
+    [InspectorName("Robot")]
+    robot,
+    [InspectorName("Turret")]
+    turret,
+    [InspectorName("Drone")]
+    drone
+}
+
 public class Enemy : MonoBehaviour
 {
     private GameObject player;
-    public float speed = 2f;
+    public EnemyType enemyType;
+    public float speed = 0.8f;
     private bool isPatrolling = true;
     public bool enemyHit = false;
     private Vector3 originalPosition;
@@ -85,6 +96,37 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
+            player = collision.gameObject;
+            print("Es invencible: " + hasInvincibility);
+            if (!hasInvincibility)
+            {
+                substractPlayerLife();
+            }
+        }
+    }
+
+    private void substractPlayerLife()
+    {
+        switch (enemyType)
+        {
+            case EnemyType.robot:
+                player.GetComponent<Player>().substractHealth(1.0f);
+                break;
+            case EnemyType.turret:
+                player.GetComponent<Player>().substractHealth(2.0f);
+                break;
+            case EnemyType.drone:
+                player.GetComponent<Player>().substractHealth(2.0f);
+                break;
+        }
+    }
+
+
     public void gotHit()
     {
         enemyLife -= 1;
@@ -102,10 +144,9 @@ public class Enemy : MonoBehaviour
         Destroy(transform.parent.gameObject);
     }
 
-
     IEnumerator EnemyAttacked()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         enemyHit = false;
     }
 }
