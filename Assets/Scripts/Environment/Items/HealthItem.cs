@@ -22,7 +22,7 @@ public class HealthItem : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             player = other.gameObject.GetComponent<Player>();
-            if (player.playerMaxHealth != player.playerCurrentHealth)
+            if (player.playerCurrentHealth < player.playerMaxHealth)
             {
                 Destroy(gameObject);
                 applyEffect();

@@ -3869,7 +3869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   gravity: 12
-  jumpSpeed: 5
+  jumpSpeed: 6
   playerMaxHealth: 8
   playerCurrentHealth: 8
   hasInvincibility: 0

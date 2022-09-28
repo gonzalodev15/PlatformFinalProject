@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private float verticalVelocity = 0;
     private float mass = 1.0f; // defines the character mass
     private bool canDoubleJump;
+    private bool isJumping = false;
     public bool hasInvincibility = false;
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
@@ -31,35 +32,54 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float xMove = Input.GetAxis("Horizontal");
-        float zMove = Input.GetAxis("Vertical");
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        Vector3 movementDirection = new Vector3(horizontal, 0, vertical);
+        movementDirection.Normalize();
+
+        verticalVelocity += (Physics.gravity.y - 2)* Time.deltaTime;
+
         if (characterController.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            isJumping = false;
+            canDoubleJump = true;
+
+            characterController.stepOffset = 0.01f;
+
+            if (Input.GetButtonDown("Jump"))
             {
-                canDoubleJump = true;
                 verticalVelocity = jumpSpeed;
-                moveDirection.y = verticalVelocity;
-            } else
+                isJumping = true;
+            }
+            else
             {
-                verticalVelocity = 0;
-                moveDirection.y = verticalVelocity;
+                verticalVelocity = -1.0f;
             }
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump)
+            characterController.stepOffset = 0;
+
+            if (isJumping && canDoubleJump && Input.GetButtonDown("Jump"))
             {
-                verticalVelocity += 4f;
+                verticalVelocity = 4.0f;
                 canDoubleJump = false;
             }
         }
-        verticalVelocity -= gravity * Time.deltaTime;
-        moveDirection = new Vector3(xMove, verticalVelocity, zMove);
-        moveDirection = transform.TransformDirection(moveDirection);
-        moveDirection.x *= speed;
-        moveDirection.z *= speed;
-        characterController.Move(moveDirection * Time.deltaTime);
+
+        Vector3 velocity = movementDirection * speed;
+        velocity.y = verticalVelocity;
+
+        characterController.Move(velocity * Time.deltaTime);
+
+        if (movementDirection != Vector3.zero)
+        {
+            Quaternion fromRotation = transform.rotation;
+            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(fromRotation, toRotation, 700 * Time.deltaTime);
+        }
 
         if (impact.magnitude > 0.2) characterController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
@@ -76,6 +96,9 @@ public class Player : MonoBehaviour
     public void restoreHealth(float healthToRestore)
     {
         playerCurrentHealth += healthToRestore;
+        if (playerCurrentHealth >= playerMaxHealth) {
+            playerCurrentHealth = playerMaxHealth;
+        }
         OnItemObtained?.Invoke();
     }
 
@@ -98,6 +121,22 @@ public class Player : MonoBehaviour
         {
             AddImpact(transform.position - collision.gameObject.transform.position, 8.0f);
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        //    if (other.gameObject.CompareTag("enemy"))
+        //    {
+        //        if (!isJumping)
+        //        {
+        //            transform.LookAt(other.gameObject.transform.position);
+        //        }
+        //    }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //transform.LookAt(new Vector3(transform.position.x, transform.position.y, 100000000));
     }
 
     IEnumerator AttackInmunity()
