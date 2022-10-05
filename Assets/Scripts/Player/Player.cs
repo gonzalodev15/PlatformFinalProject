@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     public float jumpSpeed = 4f;
     public float playerMaxHealth = 8.0f;
     public float playerCurrentHealth = 8.0f;
-    private Vector3 moveDirection = Vector3.zero;
     private Vector3 impact = Vector3.zero;
     private float verticalVelocity = 0;
     private float mass = 1.0f; // defines the character mass

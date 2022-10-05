@@ -7,8 +7,8 @@ public class FallingPlatform : MonoBehaviour
     bool isFalling = false;
     bool isPlayerInPlatform = false;
     float downSpeed = 0;
-    float fallingDelay = 2.0f;
-    float upDelay = 3.0f;
+    public float fallingDelay = 2.0f;
+    public float upDelay = 3.0f;
 
     float duration = 1.5f;
     private float t = 0;
