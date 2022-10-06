@@ -122,26 +122,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        //    if (other.gameObject.CompareTag("enemy"))
-        //    {
-        //        if (!isJumping)
-        //        {
-        //            transform.LookAt(other.gameObject.transform.position);
-        //        }
-        //    }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        //transform.LookAt(new Vector3(transform.position.x, transform.position.y, 100000000));
+        if (other.gameObject.CompareTag("bullet"))
+        {
+            AddImpact(transform.position - other.gameObject.transform.position, 8.0f);
+        }
     }
 
     IEnumerator AttackInmunity()
     {
         hasInvincibility = true;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         hasInvincibility = false;
     }
 }
