@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private bool canDoubleJump;
     private bool isJumping = false;
     public bool hasInvincibility = false;
+    private Color initialColor;
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
     public static Action OnPlayerDied;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         characterController = transform.GetComponent<CharacterController>();
+        initialColor = gameObject.GetComponent<Renderer>().material.color;
     }
 
     // Update is called once per frame
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour
 
             if (isJumping && canDoubleJump && Input.GetButtonDown("Jump"))
             {
-                verticalVelocity = 4.0f;
+                verticalVelocity = jumpSpeed;
                 canDoubleJump = false;
             }
         }
@@ -111,7 +113,7 @@ public class Player : MonoBehaviour
             OnPlayerDied?.Invoke();
             return;
         }
-        StartCoroutine(AttackInmunity());
+        StartCoroutine(AttackInmunity(2.0f));
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -130,10 +132,32 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator AttackInmunity()
+    IEnumerator AttackInmunity(float inmunitySeconds)
     {
         hasInvincibility = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(inmunitySeconds);
         hasInvincibility = false;
+        gameObject.GetComponent<Renderer>().material.color = initialColor;
+    }
+
+    public void applyInvincibilityVisualEffect()
+    {
+        gameObject.GetComponent<Renderer>().material.color = new Color(0, 16, 100, 0);
+        StartCoroutine(AttackInmunity(6.0f));
+    }
+
+    public void applyHighJump()
+    {
+        jumpSpeed += 2.0f;
+    }
+
+    public void applyBroaderRange()
+    {
+
+    }
+
+    public void applyInvincibilityShield()
+    {
+
     }
 }

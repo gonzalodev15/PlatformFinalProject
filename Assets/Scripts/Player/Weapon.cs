@@ -5,16 +5,29 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private float knockbackSpeed = 5.0f;
+    public CapsuleCollider capsuleCollider;
+
+    private void Update()
+    {
+        bool isAttacking = transform.parent.gameObject.GetComponent<Attack>().isAttacking;
+        if (isAttacking)
+        {
+            capsuleCollider.enabled = true;
+        } else
+        {
+            capsuleCollider.enabled = false;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("enemy"))
+        float distanceBetweenObjects = Vector3.Distance(transform.position, collision.gameObject.transform.position);
+        if (collision.gameObject.CompareTag("enemy"))
         {
             Vector3 direction = (collision.transform.position - transform.position).normalized;
-            print(direction);
             collision.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackSpeed, ForceMode.Impulse);
-            print("Se aplicó la fuerza con éxito");
             collision.gameObject.GetComponent<Enemy>().gotHit();
         }
     }
+
 }
