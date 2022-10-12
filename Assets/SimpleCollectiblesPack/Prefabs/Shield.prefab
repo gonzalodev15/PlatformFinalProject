@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 82438506015820482}
   - component: {fileID: 114510845023260786}
   - component: {fileID: 135105148080420062}
+  - component: {fileID: 4895325317364750127}
   m_Layer: 2
   m_Name: Shield
   m_TagString: Untagged
@@ -89,7 +90,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844328801433658}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844328801433658}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1315172d7ad53634e952f7d8f3c02048, type: 3}
   m_Name: 
@@ -194,8 +195,7 @@ MonoBehaviour:
   rotate: 1
   rotationSpeed: 10
   collectSound: {fileID: 0}
-  collectEffect: {fileID: 1702657300312902, guid: a45c51da10cf1a84abc6a99c06951e3f,
-    type: 3}
+  collectEffect: {fileID: 0}
 --- !u!135 &135105148080420062
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -209,3 +209,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.61870074
   m_Center: {x: -0.024745822, y: -0.074590534, z: 0.0046120174}
+--- !u!114 &4895325317364750127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844328801433658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca299962c77dd4c288e7c2fc3683bb18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: 2

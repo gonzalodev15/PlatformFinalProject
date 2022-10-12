@@ -16,10 +16,12 @@ public class Player : MonoBehaviour
     private bool canDoubleJump;
     private bool isJumping = false;
     public bool hasInvincibility = false;
+    public bool hasInvincibilityShield = false;
     private Color initialColor;
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
     public static Action OnPlayerDied;
+    [SerializeField] private Animator animator = null;
 
     private CharacterController characterController;
 
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour
             OnPlayerDied?.Invoke();
             return;
         }
-        StartCoroutine(AttackInmunity(2.0f));
+        StartCoroutine(AttackInmunity(1.0f));
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -135,9 +137,22 @@ public class Player : MonoBehaviour
     IEnumerator AttackInmunity(float inmunitySeconds)
     {
         hasInvincibility = true;
+        animator.Play("PlayerHurt");
         yield return new WaitForSeconds(inmunitySeconds);
         hasInvincibility = false;
         gameObject.GetComponent<Renderer>().material.color = initialColor;
+    }
+
+    IEnumerator RestoreInvincibilityShield()
+    {
+        StartCoroutine(AttackInmunity(1.0f));
+        hasInvincibility = false;
+        hasInvincibilityShield = false;
+        gameObject.GetComponent<Renderer>().material.color = initialColor;
+        yield return new WaitForSeconds(20.0f);
+        gameObject.GetComponent<Renderer>().material.color = new Color(0, 16, 100, 0);
+        hasInvincibility = true;
+        hasInvincibilityShield = true;
     }
 
     public void applyInvincibilityVisualEffect()
@@ -153,11 +168,20 @@ public class Player : MonoBehaviour
 
     public void applyBroaderRange()
     {
-
+        Transform weapon = transform.Find("Capsule");
+        weapon.localScale = new Vector3(weapon.localScale.x, 1.0f, weapon.localScale.z);
     }
 
     public void applyInvincibilityShield()
     {
-
+        gameObject.GetComponent<Renderer>().material.color = new Color(0, 16, 100, 0);
+        hasInvincibility = true;
+        hasInvincibilityShield = true;
     }
+
+    public void shutDownInvincibilityShield()
+    {
+        StartCoroutine(RestoreInvincibilityShield());
+    }
+
 }

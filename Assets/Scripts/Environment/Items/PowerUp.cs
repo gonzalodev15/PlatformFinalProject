@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum PowerUpEnum
 {
-    [InspectorName("Red potion")]
+    [InspectorName("High Jump")]
     highJump,
-    [InspectorName("Green potion")]
+    [InspectorName("Increased Attack Range")]
     increasedAttack,
-    [InspectorName("Blue potion")]
+    [InspectorName("Untouchable")]
     untouchable
 }
 
@@ -36,10 +36,10 @@ public class PowerUp : MonoBehaviour
                 player.applyHighJump();
                 break;
             case PowerUpEnum.increasedAttack:
-                player.restoreHealth(2.0f);
+                player.applyBroaderRange();
                 break;
             case PowerUpEnum.untouchable:
-                player.applyInvincibilityVisualEffect();
+                player.applyInvincibilityShield();
                 break;
         }
     }

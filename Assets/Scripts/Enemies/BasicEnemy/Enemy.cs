@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     public float speed = 0.8f;
     private bool isPatrolling = true;
     public bool enemyHit = false;
+    public float enemyScore = 0;
     private Vector3 originalPosition;
     public Transform startPatrolPoint;
     public Transform endPatrolPoint;
@@ -101,11 +102,15 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
+            bool hasInvincibilityShield = player.GetComponent<Player>().hasInvincibilityShield;
             player = collision.gameObject;
             print("Es invencible: " + hasInvincibility);
             if (!hasInvincibility)
             {
                 substractPlayerLife();
+            } else if(hasInvincibility && hasInvincibilityShield)
+            {
+                player.GetComponent<Player>().shutDownInvincibilityShield();
             }
         }
     }
@@ -134,6 +139,7 @@ public class Enemy : MonoBehaviour
         if(enemyLife <= 0)
         {
             enemyAnimator.Play("EnemyDefeated");
+            ScoreManager.instance.addScore(enemyScore);
             StartCoroutine(destroyEnemy());
         }
     }

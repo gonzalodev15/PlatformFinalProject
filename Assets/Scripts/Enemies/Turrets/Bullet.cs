@@ -62,11 +62,16 @@ public class Bullet : MonoBehaviour
         {
             player = other.gameObject;
             bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
+            bool hasInvincibilityShield = player.GetComponent<Player>().hasInvincibilityShield;
             print("Es invencible: " + hasInvincibility);
             if (!hasInvincibility)
             {
                 destroy(player.transform);
                 substractPlayerLife();
+            }
+            else if (hasInvincibility && hasInvincibilityShield)
+            {
+                player.GetComponent<Player>().shutDownInvincibilityShield();
             }
         }
     }

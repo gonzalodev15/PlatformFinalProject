@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 82126788871569762}
   - component: {fileID: 114994480510399738}
   - component: {fileID: 135639512477297628}
+  - component: {fileID: 3382327759931606918}
   m_Layer: 2
   m_Name: Sword
   m_TagString: Untagged
@@ -89,7 +90,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037343330875508}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037343330875508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1315172d7ad53634e952f7d8f3c02048, type: 3}
   m_Name: 
@@ -194,8 +195,7 @@ MonoBehaviour:
   rotate: 1
   rotationSpeed: 10
   collectSound: {fileID: 0}
-  collectEffect: {fileID: 1702657300312902, guid: a45c51da10cf1a84abc6a99c06951e3f,
-    type: 3}
+  collectEffect: {fileID: 0}
 --- !u!135 &135639512477297628
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -209,3 +209,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.57
   m_Center: {x: 0, y: 0.037611008, z: 0}
+--- !u!114 &3382327759931606918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037343330875508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca299962c77dd4c288e7c2fc3683bb18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: 1

@@ -142,8 +142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e85b1bfa94f47a0b3cfdb9fb16ea33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
   speed: 0.8
   enemyHit: 0
+  enemyScore: 100
   startPatrolPoint: {fileID: 6458592022519573539}
   endPatrolPoint: {fileID: 6458592022473303599}
   enemyAnimator: {fileID: 3951654060074351143}
