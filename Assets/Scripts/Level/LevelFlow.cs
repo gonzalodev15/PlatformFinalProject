@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelFlow : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class LevelFlow : MonoBehaviour
     {
         Player.OnPlayerDied += LoadLoseLevel;
         Goal.GoalReached += LoadWinLevel;
-        FallDetection.PlayerDied += LoadLoseLevel;
+        FallDetection.PlayerDiedFromFall += resetPlayerPositionToCheckpoint;
     }
 
     private IEnumerator LoadLevel(string levelName)
@@ -34,10 +35,16 @@ public class LevelFlow : MonoBehaviour
         StartCoroutine(LoadLevel(_loseSceneName));
     }
 
+    private void resetPlayerPositionToCheckpoint()
+    {
+        Player player = GameObject.Find("Player").GetComponent<Player>();
+        player.transform.position = player.respawnPoint;
+    }
+
     private void OnDisable()
     {
         Player.OnPlayerDied -= LoadLoseLevel;
         Goal.GoalReached -= LoadWinLevel;
-        FallDetection.PlayerDied -= LoadLoseLevel;
+        FallDetection.PlayerDiedFromFall -= resetPlayerPositionToCheckpoint;
     }
 }

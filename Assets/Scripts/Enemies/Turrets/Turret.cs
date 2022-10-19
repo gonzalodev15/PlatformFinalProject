@@ -8,28 +8,43 @@ public class Turret : MonoBehaviour
     Transform target;
     public Transform bullet;
     public Transform shootStartPoint;
+    public Transform shootStartPoint2;
     public Transform shootEndPoint;
-    public bool isLaser = false;
-    public LineRenderer lineRenderer;
+    private Transform currentShootStartPoint;
     public GameObject _particles;
 
     public float fireRate = 1f;
     public float fireCountdown = 0f;
+    public bool isDrone = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (isDrone)
+        {
+            currentShootStartPoint = shootStartPoint;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (fireCountdown <= 0f)
+        if(!isDrone)
         {
-            Shoot();
-            fireCountdown = 1f / fireRate;
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
+        } else
+        {
+            if (fireCountdown <= 0f && target != null)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
         }
-
+        
         fireCountdown -= Time.deltaTime;
     }
 
@@ -43,7 +58,39 @@ public class Turret : MonoBehaviour
 
     void Shoot()
     {
-        GameObject currentBullet = Instantiate(bullet, shootStartPoint.position, shootStartPoint.rotation).gameObject;
-        currentBullet.GetComponent<Bullet>().setTarget(shootEndPoint);
+        if(isDrone)
+        {
+            GameObject currentBullet = Instantiate(bullet, currentShootStartPoint.position, currentShootStartPoint.rotation).gameObject;
+            currentBullet.GetComponent<Bullet>().setTarget(target);
+
+            target = null;
+            if(currentShootStartPoint == shootStartPoint)
+            {
+                currentShootStartPoint = shootStartPoint2;
+            } else
+            {
+                currentShootStartPoint = shootStartPoint;
+            }
+        } else
+        {
+            GameObject currentBullet = Instantiate(bullet, shootStartPoint.position, shootStartPoint.rotation).gameObject;
+            currentBullet.GetComponent<Bullet>().setTarget(shootEndPoint);
+            target = null;
+        }
+    }
+
+    
+
+    void lockTarget(GameObject player)
+    {
+        target = player.transform;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.CompareTag("Player"))
+        {
+            lockTarget(other.gameObject);
+        }
     }
 }

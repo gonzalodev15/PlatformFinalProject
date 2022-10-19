@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     private Transform _target;
     private GameObject player;
     public GameObject _particles;
+    public Vector3 targetPosition;
     public EnemyType enemyType;
     public float speed = 70;
     public float radius = 10f;
@@ -14,12 +15,7 @@ public class Bullet : MonoBehaviour
     public void setTarget(Transform target)
     {
         _target = target;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
+        targetPosition = _target.position;
     }
 
     // Update is called once per frame
@@ -30,7 +26,7 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Vector3 dir = _target.position - transform.position;
+        Vector3 dir = targetPosition - transform.position;
         float distanceThisFrame = speed * Time.deltaTime;
 
         if (dir.magnitude <= distanceThisFrame)
@@ -38,21 +34,51 @@ public class Bullet : MonoBehaviour
             hitTarget();
         }
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(_target);
+        transform.LookAt(targetPosition);
 
     }
 
     void hitTarget()
     {
-        destroy(_target);
+        if (radius == 0)
+        {
+            destroy(_target);
+        }
+        else
+        {
+            explode();
+        }
     }
 
     void destroy(Transform target)
     {
-        GameObject particles = Instantiate(_particles, target.position, target.rotation);
-        //target.GetComponent<Enemy>().EnemyHit(1);
+        GameObject particles = Instantiate(_particles, targetPosition, _target.rotation);
         Destroy(gameObject);
         Destroy(particles, 0.4f);
+    }
+
+    void explode()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.tag == "Player")
+            {
+                Player _player  = collider.gameObject.GetComponent<Player>();
+                player = _player.gameObject;
+                bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
+                bool hasInvincibilityShield = player.GetComponent<Player>().hasInvincibilityShield;
+                if (!hasInvincibility)
+                {
+                    substractPlayerLife();
+                }
+                else if (hasInvincibility && hasInvincibilityShield)
+                {
+                    player.GetComponent<Player>().shutDownInvincibilityShield();
+                }
+            }
+        }
+        destroy(transform);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -90,5 +116,11 @@ public class Bullet : MonoBehaviour
                 player.GetComponent<Player>().substractHealth(2.0f);
                 break;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(targetPosition, radius);
     }
 }

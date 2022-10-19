@@ -9,6 +9,7 @@ public class FallingPlatform : MonoBehaviour
     float downSpeed = 0;
     public float fallingDelay = 2.0f;
     public float upDelay = 3.0f;
+    private Color initialColor;
 
     float duration = 1.5f;
     private float t = 0;
@@ -29,7 +30,6 @@ public class FallingPlatform : MonoBehaviour
         if (collider.gameObject.tag == "Player")
         {
             isPlayerInPlatform = false;
-            //StopAllCoroutines();
             StartCoroutine(WaitForGoingUp());
         }
     }
@@ -37,6 +37,7 @@ public class FallingPlatform : MonoBehaviour
     private void Start()
     {
         initialPosition = transform.position;
+        initialColor = gameObject.GetComponent<Renderer>().material.color;
     }
 
     // Update is called once per frame
@@ -53,9 +54,10 @@ public class FallingPlatform : MonoBehaviour
             if (transform.position.y != initialPosition.y)
             {
                 ResetColor();
-                transform.position = Vector3.Lerp(transform.position, initialPosition, 0.2f);
+                transform.position = Vector3.Lerp(transform.position, initialPosition, 0.3f);
+                StartCoroutine(WaitForAssigningValue());
             }
-            else if (initialPosition == transform.position && isPlayerInPlatform)
+            else if (transform.position == initialPosition&& isPlayerInPlatform)
             {
                 ChangeColor();
             }
@@ -80,6 +82,12 @@ public class FallingPlatform : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitForAssigningValue()
+    {
+        yield return new WaitForSeconds(0.2f);
+        transform.position = initialPosition;
+    }
+
     void ChangeColor()
     {
         gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.green, Color.red, t);
@@ -92,7 +100,7 @@ public class FallingPlatform : MonoBehaviour
 
     void ResetColor()
     {
-        gameObject.GetComponent<Renderer>().material.color = Color.grey;
+        gameObject.GetComponent<Renderer>().material.color = initialColor;
         t = 0;
     }
 }

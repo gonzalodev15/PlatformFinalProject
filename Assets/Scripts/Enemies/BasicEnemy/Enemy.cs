@@ -55,9 +55,11 @@ public class Enemy : MonoBehaviour
                 {
                     if(currentPatrolPoint == startPatrolPoint)
                     {
+                        transform.LookAt(endPatrolPoint);
                         currentPatrolPoint = endPatrolPoint;
                     } else if (currentPatrolPoint == endPatrolPoint)
                     {
+                        transform.LookAt(startPatrolPoint);
                         currentPatrolPoint = startPatrolPoint;
                     }
                 }
@@ -80,12 +82,16 @@ public class Enemy : MonoBehaviour
             player = other.gameObject;
             if (!enemyHit)
             {
-                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+                if(enemyType != EnemyType.drone)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+                }
             } else
             {
                 transform.position = transform.position;
                 StartCoroutine(EnemyAttacked());
             }
+            transform.LookAt(other.gameObject.transform);
         }
     }
 

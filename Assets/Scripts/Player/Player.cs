@@ -21,15 +21,17 @@ public class Player : MonoBehaviour
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
     public static Action OnPlayerDied;
+    public Vector3 respawnPoint;
     [SerializeField] private Animator animator = null;
 
-    private CharacterController characterController;
+    public CharacterController characterController;
 
     // Start is called before the first frame update
     void Start()
     {
         characterController = transform.GetComponent<CharacterController>();
         initialColor = gameObject.GetComponent<Renderer>().material.color;
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -87,6 +89,11 @@ public class Player : MonoBehaviour
         if (impact.magnitude > 0.2) characterController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+
+        if (transform.position.y < -20)
+        {
+            transform.position = respawnPoint;
+        }
     }
 
     void AddImpact(Vector3 direction, float force)
