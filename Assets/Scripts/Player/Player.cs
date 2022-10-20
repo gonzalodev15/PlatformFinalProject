@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
             Quaternion fromRotation = transform.rotation;
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(fromRotation, toRotation, 700 * Time.deltaTime);
+            transform.LookAt(transform.position);
         }
 
         if (impact.magnitude > 0.2) characterController.Move(impact * Time.deltaTime);
