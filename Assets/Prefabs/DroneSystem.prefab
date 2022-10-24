@@ -163,7 +163,7 @@ MonoBehaviour:
   shootEndPoint: {fileID: 0}
   _particles: {fileID: 8341774197022220874, guid: 2bacb236e9ab441e5873e5f7e67a7851,
     type: 3}
-  fireRate: 0.5
+  fireRate: 1
   fireCountdown: 0
   isDrone: 1
 --- !u!135 &8547943540339959853

@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         Vector3 movementDirection = new Vector3(horizontal, 0, vertical);
         movementDirection.Normalize();
 
-        verticalVelocity += (Physics.gravity.y - 2)* Time.deltaTime;
+       verticalVelocity += (gravity - 2)* Time.deltaTime;
 
         if (characterController.isGrounded)
         {
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
 
-        if (transform.position.y < -20)
+        if (transform.position.y < -30)
         {
             transform.position = respawnPoint;
         }

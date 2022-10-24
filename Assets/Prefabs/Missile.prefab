@@ -96,11 +96,9 @@ MonoBehaviour:
   _particles: {fileID: 8341774197022220874, guid: 2bacb236e9ab441e5873e5f7e67a7851,
     type: 3}
   targetPosition: {x: 0, y: 0, z: 0}
-  targetIndicator: {fileID: 1592056927790128971, guid: 6c3af656527c243b6be5280ddbb764d9,
-    type: 3}
   enemyType: 2
-  speed: 5
-  radius: 3
+  speed: 7
+  radius: 2
 --- !u!135 &-4350899232017235687
 SphereCollider:
   m_ObjectHideFlags: 0

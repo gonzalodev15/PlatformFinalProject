@@ -75,7 +75,7 @@ public class FallingPlatform : MonoBehaviour
         yield return new WaitForSeconds(upDelay);
         if (isFalling)
         {
-            transform.position = new Vector3(transform.position.x, -6.0f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, initialPosition.y-6.0f, transform.position.z);
             isFalling = false;
             downSpeed = 0;
             ResetColor();
@@ -94,7 +94,7 @@ public class FallingPlatform : MonoBehaviour
 
         if (t < 1)
         {
-            t += Time.deltaTime / duration;
+            t += Time.deltaTime / fallingDelay;
         }
     }
 
