@@ -16,6 +16,10 @@ public class Bullet : MonoBehaviour
     {
         _target = target;
         targetPosition = _target.position;
+        Vector3 dir = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 rotation = lookRotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(rotation.x, rotation.y + 90, rotation.z + 25);
     }
 
     // Update is called once per frame
@@ -34,8 +38,6 @@ public class Bullet : MonoBehaviour
             hitTarget();
         }
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(targetPosition);
-
     }
 
     void hitTarget()

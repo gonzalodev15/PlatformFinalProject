@@ -4232,7 +4232,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 29b79a1114e9541ea8e01aeaeb0d0db5, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -5213,7 +5213,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -11247,7 +11247,7 @@ PrefabInstance:
     - target: {fileID: 6354092979926098443, guid: d6662670f4bd241828c7cd647ec112ad,
         type: 3}
       propertyPath: fireRate
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6662670f4bd241828c7cd647ec112ad, type: 3}
@@ -13538,6 +13538,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DroneSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354092979926098443, guid: d6662670f4bd241828c7cd647ec112ad,
+        type: 3}
+      propertyPath: fireRate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6662670f4bd241828c7cd647ec112ad, type: 3}

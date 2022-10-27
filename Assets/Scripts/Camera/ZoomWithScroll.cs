@@ -5,6 +5,8 @@ using UnityEngine;
 public class ZoomWithScroll : MonoBehaviour
 {
     [SerializeField] private float scrollSpeed = 10f;
+    private float maxZoom = 100f;
+    private float minZoom = 60f;
 
     private Camera zoomCamera;
     // Start is called before the first frame update
@@ -22,6 +24,7 @@ public class ZoomWithScroll : MonoBehaviour
         } else
         {
             zoomCamera.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;
+            zoomCamera.fieldOfView = Mathf.Clamp(zoomCamera.fieldOfView, minZoom, maxZoom);
         }
 
     }
