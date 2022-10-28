@@ -85,7 +85,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Se entró a TriggerEnter");
         if (other.gameObject.CompareTag("Player"))
         {
             player = other.gameObject;

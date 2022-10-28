@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     public Transform endPatrolPoint;
     private Transform currentPatrolPoint;
     [SerializeField] private Animator enemyAnimator = null;
+    public GameObject enemyParticles;
     [SerializeField] float enemyLife = 3;
    
     // Start is called before the first frame update
@@ -107,16 +108,20 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
-            bool hasInvincibilityShield = player.GetComponent<Player>().hasInvincibilityShield;
-            player = collision.gameObject;
-            print("Es invencible: " + hasInvincibility);
-            if (!hasInvincibility)
+            if(enemyType != EnemyType.drone)
             {
-                substractPlayerLife();
-            } else if(hasInvincibility && hasInvincibilityShield)
-            {
-                player.GetComponent<Player>().shutDownInvincibilityShield();
+                bool hasInvincibility = player.GetComponent<Player>().hasInvincibility;
+                bool hasInvincibilityShield = player.GetComponent<Player>().hasInvincibilityShield;
+                player = collision.gameObject;
+                print("Es invencible: " + hasInvincibility);
+                if (!hasInvincibility)
+                {
+                    substractPlayerLife();
+                }
+                else if (hasInvincibility && hasInvincibilityShield)
+                {
+                    player.GetComponent<Player>().shutDownInvincibilityShield();
+                }
             }
         }
     }
@@ -144,7 +149,18 @@ public class Enemy : MonoBehaviour
         enemyHit = true;
         if(enemyLife <= 0)
         {
-            enemyAnimator.Play("EnemyDefeated");
+            if (enemyType == EnemyType.robot)
+            {
+                enemyAnimator.Play("EnemyDefeated");
+            } else if (enemyType == EnemyType.turret)
+            {
+
+            } else if (enemyType == EnemyType.drone)
+            {
+                enemyAnimator.Play("DroneDefeated");
+                StartCoroutine(playParticlesForDefeatedEnemy());
+            }
+
             ScoreManager.instance.addScore(enemyScore);
             StartCoroutine(destroyEnemy());
         }
@@ -160,5 +176,12 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         enemyHit = false;
+    }
+
+    IEnumerator playParticlesForDefeatedEnemy()
+    {
+        yield return new WaitForSeconds(1f);
+        GameObject particles = Instantiate(enemyParticles, transform.position, transform.rotation);
+        Destroy(particles, 0.4f);
     }
 }

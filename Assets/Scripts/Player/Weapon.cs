@@ -26,8 +26,18 @@ public class Weapon : MonoBehaviour
         {
             Vector3 direction = (collision.transform.position - transform.position).normalized;
             collision.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackSpeed, ForceMode.Impulse);
+            if (collision.gameObject.GetComponent<Enemy>().enemyType == EnemyType.drone)
+            {
+                StartCoroutine(droneCollisionTime(collision));
+            }
             collision.gameObject.GetComponent<Enemy>().gotHit();
         }
+    }
+
+    IEnumerator droneCollisionTime(Collision collision) {
+        yield return new WaitForSeconds(0.25f);
+        collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        collision.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     }
 
 }
