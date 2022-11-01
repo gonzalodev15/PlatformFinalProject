@@ -5,7 +5,7 @@ using UnityEngine;
 public class FallingPlatform : MonoBehaviour
 {
     bool isFalling = false;
-    bool isPlayerInPlatform = false;
+    bool wasTouched = false;
     float downSpeed = 0;
     public float fallingDelay = 2.0f;
     public float upDelay = 3.0f;
@@ -20,7 +20,7 @@ public class FallingPlatform : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            isPlayerInPlatform = true;
+            wasTouched = true;
             StartCoroutine(WaitForPlatform());
         }
     }
@@ -29,7 +29,6 @@ public class FallingPlatform : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            isPlayerInPlatform = false;
             StartCoroutine(WaitForGoingUp());
         }
     }
@@ -57,7 +56,7 @@ public class FallingPlatform : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, initialPosition, 0.3f);
                 StartCoroutine(WaitForAssigningValue());
             }
-            else if (transform.position == initialPosition&& isPlayerInPlatform)
+            else if (transform.position == initialPosition&& wasTouched)
             {
                 ChangeColor();
             }
@@ -77,6 +76,7 @@ public class FallingPlatform : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, initialPosition.y-6.0f, transform.position.z);
             isFalling = false;
+            wasTouched = false;
             downSpeed = 0;
             ResetColor();
         }

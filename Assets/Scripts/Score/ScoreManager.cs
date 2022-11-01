@@ -28,14 +28,11 @@ public class ScoreManager : MonoBehaviour
 
     public void addScore(float score)
     {
-        if (LevelFlow.playerDied == false)
+        scoreText.text = Mathf.Round(getScore() + score).ToString();
+        if (getScore() >= 700)
         {
-            scoreText.text = Mathf.Round(getScore() + score).ToString();
-            if (getScore() >= 700)
-            {
-                substractScore(700);
-                OnTargetScoreReached?.Invoke();
-            }
+            substractScore(700);
+            OnTargetScoreReached?.Invoke();
         }
     }
 
