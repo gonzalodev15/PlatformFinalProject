@@ -52,12 +52,14 @@ public class HealthManager : MonoBehaviour
     private void OnEnable()
     {
         Player.OnPlayerDamaged += DrawHearts;
+        Player.OnTargetScoreReached += DrawHearts;
         Player.OnItemObtained += DrawHearts;
     }
 
     private void OnDisable()
     {
         Player.OnPlayerDamaged -= DrawHearts;
+        Player.OnTargetScoreReached -= DrawHearts;
         Player.OnItemObtained -= DrawHearts;
     }
 }

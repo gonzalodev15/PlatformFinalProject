@@ -36,8 +36,11 @@ public class Weapon : MonoBehaviour
 
     IEnumerator droneCollisionTime(Collision collision) {
         yield return new WaitForSeconds(0.25f);
-        collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        collision.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        if (collision.gameObject.GetComponent<Rigidbody>() != null)
+        {
+            collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            collision.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        }
     }
 
 }

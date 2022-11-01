@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private Color initialColor;
     public static Action OnPlayerDamaged;
     public static Action OnItemObtained;
+    public static Action OnTargetScoreReached;
     public static Action OnPlayerDied;
     public Vector3 respawnPoint;
     [SerializeField] private Animator animator = null;
@@ -104,10 +105,20 @@ public class Player : MonoBehaviour
         impact += direction.normalized * force / mass;
     }
 
+    public void restoreHealthByScore()
+    {
+        playerCurrentHealth += 4;
+        if (playerCurrentHealth >= playerMaxHealth) {
+            playerCurrentHealth = playerMaxHealth;
+        }
+        OnTargetScoreReached?.Invoke();
+    }
+
     public void restoreHealth(float healthToRestore)
     {
         playerCurrentHealth += healthToRestore;
-        if (playerCurrentHealth >= playerMaxHealth) {
+        if (playerCurrentHealth >= playerMaxHealth)
+        {
             playerCurrentHealth = playerMaxHealth;
         }
         OnItemObtained?.Invoke();
@@ -192,4 +203,13 @@ public class Player : MonoBehaviour
         StartCoroutine(RestoreInvincibilityShield());
     }
 
+    private void OnEnable()
+    {
+        ScoreManager.OnTargetScoreReached += restoreHealthByScore;
+    }
+
+    private void OnDisable()
+    {
+        ScoreManager.OnTargetScoreReached -= restoreHealthByScore;
+    }
 }

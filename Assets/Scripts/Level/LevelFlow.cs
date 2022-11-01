@@ -11,6 +11,7 @@ public class LevelFlow : MonoBehaviour
 
     public string _winSceneName;
     public float _levelLoadDelay;
+    public static bool playerDied = false;
 
     public string _loseSceneName;
 
@@ -34,6 +35,7 @@ public class LevelFlow : MonoBehaviour
 
     private void LoadLoseLevel()
     {
+        playerDied = true;
         StartCoroutine(FadeBlackOutSquare());
         StartCoroutine(LoadLevel(_loseSceneName));
     }
