@@ -41,10 +41,10 @@ public class Potion : MonoBehaviour
         switch (item)
         {
             case HealthItemEnum.red:
-                player.restoreHealth(1.0f);
+                player.restoreHealth(2.0f);
                 break;
             case HealthItemEnum.green:
-                player.restoreHealth(2.0f);
+                player.restoreHealth(4.0f);
                 break;
             case HealthItemEnum.blue:
                 player.applyInvincibilityVisualEffect();
