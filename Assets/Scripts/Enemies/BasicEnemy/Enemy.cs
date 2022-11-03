@@ -151,6 +151,8 @@ public class Enemy : MonoBehaviour
         {
             if (enemyType == EnemyType.robot)
             {
+                GetComponent<Rigidbody>().useGravity = false;
+                GetComponent<Rigidbody>().isKinematic = true;
                 enemyAnimator.Play("EnemyDefeated");
             } else if (enemyType == EnemyType.turret)
             {
@@ -158,10 +160,15 @@ public class Enemy : MonoBehaviour
             } else if (enemyType == EnemyType.drone)
             {
                 enemyAnimator.Play("DroneDefeated");
+                gameObject.GetComponent<Turret>().fireRate = 0.01f;
                 StartCoroutine(playParticlesForDefeatedEnemy());
             }
 
             ScoreManager.instance.addScore(enemyScore);
+            foreach (Collider c in GetComponents<Collider>())
+            {
+                c.enabled = false;
+            }
             StartCoroutine(destroyEnemy());
         }
     }
