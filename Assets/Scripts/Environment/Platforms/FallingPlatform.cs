@@ -10,8 +10,6 @@ public class FallingPlatform : MonoBehaviour
     public float fallingDelay = 2.0f;
     public float upDelay = 3.0f;
     private Color initialColor;
-
-    float duration = 1.5f;
     private float t = 0;
 
     Vector3 initialPosition;
